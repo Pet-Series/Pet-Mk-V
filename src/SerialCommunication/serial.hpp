@@ -16,6 +16,7 @@ namespace SerialC {
 
         void writeM(std::string message);
         std::string readM();
+        int readMSize();
 
         void setConfig(const int &baudrate);
 

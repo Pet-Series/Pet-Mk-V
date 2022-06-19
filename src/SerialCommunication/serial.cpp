@@ -7,6 +7,7 @@
 #include <errno.h> // Error integer and strerror() function
 #include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
+#include <sys/ioctl.h>  // Read buffer size
 
 
 // Normal headers
@@ -86,7 +87,7 @@ namespace SerialC{
         this->setFlag(tty.c_oflag, ONLCR, false);   // Conversion of newline to carriage return/line feed
 
         // Vmin Vtime (c_cc)
-        tty.c_cc[VTIME] = 10;   // Minimum wait time from first byte recieved 0.1s per value
+        tty.c_cc[VTIME] = 0;   // Minimum wait time from first byte recieved 0.1s per value
         tty.c_cc[VMIN]  = 0;    // Minimum number of bytes
 
         // Baud rate
@@ -120,6 +121,14 @@ namespace SerialC{
             return "";
         }
         return std::string(&readBuffer[0], &readBuffer[n]);
+    }
+
+    int SerialConnection::readMSize(){
+        int bytes = 0;
+
+        ioctl(this->serialPort, FIONREAD, &bytes);
+
+        return bytes;
     }
 
 
