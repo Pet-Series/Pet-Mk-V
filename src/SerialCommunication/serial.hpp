@@ -10,8 +10,8 @@ namespace SerialC {
     class SerialConnection
     {
         public:
-        SerialConnection(const std::string &name): SerialConnection(name, 9600){};
-        SerialConnection(const std::string &name, const int &baudrate);
+        SerialConnection(const std::string &ttyName): SerialConnection(ttyName, 9600){};
+        SerialConnection(const std::string &ttyName, const int &baudrate);
         ~SerialConnection();
 
         void writeM(std::string message);

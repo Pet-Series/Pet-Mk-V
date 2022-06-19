@@ -17,14 +17,14 @@
 
 namespace SerialC{
 
-    SerialConnection::SerialConnection(const std::string &name, const int &baudrate){
+    SerialConnection::SerialConnection(const std::string &ttyName, const int &baudrate){
         /* Open File Descriptor */
-        this->serialPort = open(name.data(), O_RDWR| O_NOCTTY );
+        this->serialPort = open(ttyName.data(), O_RDWR| O_NOCTTY );
         this->restoreOriginaltty = false;
 
         /* Error Handling */
         if (this->serialPort < 0){
-            std::cout << "Error " << errno << " opening " << name << ": " << strerror (errno) << std::endl;
+            std::cout << "Error " << errno << " opening " << ttyName << ": " << strerror (errno) << std::endl;
         }
         else{
             setConfig(baudrate);
