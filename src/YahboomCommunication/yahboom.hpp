@@ -2,7 +2,17 @@
 
 #include "SerialCommunication/serial.hpp"
 
+
 namespace YahboomC {
+
+    struct Measurments{
+        double leftWheelTick;
+        double rightWheelTick;
+        double acceleration; // ???
+        double gyro; // ???
+        double soundSensorDistance;
+        double voltage;
+    };
 
     class YahboomConnection
     {
@@ -16,16 +26,23 @@ namespace YahboomC {
         // signle function for movement?
         // read documentation for this!
 
-        void enableLogging();
-        void disableLogging();
+        void tick();
 
+        Measurments getSensorData();
         // someStruct getLoggingInformation();
 
         private:
         SerialC::SerialConnection serialConnection;
+        Measurments sensorData;
         char ringBuffer[2048];
 
+        void enableLogging();
+        void disableLogging();
 
+        void tickRead();
+        void tickWrite();
+
+        void parseReadMessage();
 
     };
 }
