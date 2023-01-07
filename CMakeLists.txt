@@ -4,6 +4,11 @@ cmake_minimum_required(VERSION 3.10)
 project(SerialCommunication)
 add_executable(SerialC)
 
+# Settings
+
+target_compile_options(SerialC PRIVATE -Wall)
+set(CMAKE_CXX_STANDARD 20)
+
 # Set paths
 set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 
