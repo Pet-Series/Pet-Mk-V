@@ -24,6 +24,12 @@ namespace YahboomC {
         // this->serialConnection.~SerialConnection();
     }
 
+    void YahboomConnection::stop(){
+        YahboomC::Command command = YahboomC::Command();
+        command.direction = 0;
+        this->tickWrite(command.toString());
+    }
+
     void YahboomConnection::forward(){
         YahboomC::Command command = YahboomC::Command();
         command.direction = 1;

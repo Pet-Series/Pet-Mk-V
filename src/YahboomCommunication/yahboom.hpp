@@ -91,6 +91,7 @@ namespace YahboomC {
         YahboomConnection(const std::string &ttyName, const int &baudrate);
         ~YahboomConnection();
 
+        void stop();
         void forward();
         void backwards();
         void turnRight();

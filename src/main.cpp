@@ -10,6 +10,8 @@ int main() {
     YahboomC::YahboomConnection a = YahboomC::YahboomConnection("/dev/ttyACM0");
 
     int state = 0;
+    int waitTick = 0;
+    const int waitTime = 20;
 
    for(int i = 0; i < 100000; i++){
         usleep(1 * 1000000);
@@ -17,15 +19,19 @@ int main() {
         switch (state) 
         {
             case 0:
-                a.forward();
-                state = 1;
-                break;
+                a.stop();
+                waitTick++;
+                if (waitTick > waitTime)
+                {
+                    state = 1;
+                    waitTick = 0;
+                }
             case 1:
-                a.backwards();
+                a.forward();
                 state = 2;
                 break;
             case 2:
-                a.rotateLeft();
+                a.backwards();
                 state = 3;
                 break;
             case 3:
@@ -33,6 +39,10 @@ int main() {
                 state = 4;
                 break;
             case 4:
+                a.rotateLeft();
+                state = 5;
+                break;
+            case 5:
                 a.rotateRight();
                 state = 0;
                 break;
