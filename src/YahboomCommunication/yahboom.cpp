@@ -1,4 +1,5 @@
 #include <string>
+#include <unistd.h>
 #include "SerialCommunication/serial.hpp"
 #include "yahboom.hpp"
 
@@ -13,6 +14,7 @@ namespace YahboomC {
         //this->serialConnection;
         //this->bufferString = "";
         //this->sensorData = YahboomC::Measurments();  
+        usleep(2 * 1000000); // TODO: replace with "connection established" check
         this->enableLogging();
     }
 
@@ -129,10 +131,20 @@ namespace YahboomC {
         }
 
         
-        const std::string measurmentsString = this->bufferString.substr(firstIndex, lastIndex - firstIndex + 1); // $LV{},RV{},AC{},GY{},CSB{},VI{}#
-        const std::string formatString = "$LV0,RV1,AC2,GY3,CSB4,VI5#";
+        const std::string measurmentsString = this->bufferString.substr(firstIndex, lastIndex - firstIndex + 1); // $LV{},RV{},AC{},GY{},CSB{},VT{}#
+        const std::string formatString = "$LV0,RV1,AC2,GY3,CSB4,VT5#";
         this->bufferString.erase(0, lastIndex + 1); // clear the string
 
+        //std::cout << measurmentsString << std::endl;
+
+        // Parse command responses
+        if (measurmentsString == "$OK#")
+        {
+            return; // Do nothing
+        }
+
+
+        // Parse mesurements
         YahboomC::Measurments measurments = YahboomC::Measurments();
 
         int index = 0;
@@ -148,7 +160,7 @@ namespace YahboomC {
                         // do nothing
                     }
                     else{
-                        double number = std::stod(measurmentsString.substr(i - numberIndexStart + 1));
+                        double number = std::stod(measurmentsString.substr(numberIndexStart, i - numberIndexStart + 1));
                         switch (indexChar){
                             case '0':
                                 measurments.leftWheelTick = number;
@@ -169,7 +181,7 @@ namespace YahboomC {
                                 measurments.voltage = number;
                                 break;
                             default:
-                                throw 1;
+                                throw "test";
                         }
 
                         numberIndexStart = -1;
@@ -181,7 +193,7 @@ namespace YahboomC {
                     index++;
                 }
                 else{
-                    return; // CRASH HERE?
+                    throw std::runtime_error("Error can't parse the following line: " + measurmentsString);
                 }
             }
         }
