@@ -18,12 +18,13 @@ namespace YahboomC {
     };
 
     struct Measurments{
-        double leftWheelTick;
-        double rightWheelTick;
-        double acceleration; // ???
-        double gyro; // ???
-        double soundSensorDistance;
-        double voltage;
+        double leftWheelTick = 0;
+        double rightWheelTick = 0;
+        double acceleration = 0; // ???
+        double gyro = 0; // ???
+        double soundSensorDistance = 0;
+        double voltage = 0;
+        uint messageNr = 0;
     };
 
     struct Command{

@@ -121,12 +121,13 @@ namespace YahboomC {
     }
 
     void YahboomConnection::parseReadMessage(){
-        std::size_t lastIndex = this->bufferString.rfind("#");
-        if (lastIndex == std::string::npos){
+
+        std::size_t firstIndex = this->bufferString.find("$");
+        if (firstIndex == std::string::npos){
             return; // Nothing found
         }
-        std::size_t firstIndex = this->bufferString.rfind("$", lastIndex);
-        if (firstIndex == std::string::npos){
+        std::size_t lastIndex = this->bufferString.find("#", firstIndex);
+        if (lastIndex == std::string::npos){
             return; // Nothing found
         }
 
@@ -198,6 +199,7 @@ namespace YahboomC {
             }
         }
 
+        measurments.messageNr = this->sensorData.messageNr + 1;
         this->sensorData = measurments;
     }
 

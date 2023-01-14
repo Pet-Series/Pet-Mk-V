@@ -48,6 +48,7 @@ int main() {
         std::cout << "Gyro: " << retval.gyro << std::endl;
         std::cout << "Distance: " << retval.soundSensorDistance << std::endl;
         std::cout << "Voltage: " << retval.voltage << std::endl;
+        std::cout << "Message Nr: " << retval.messageNr << std::endl;
         std::cout << "========== " << i << " ==========" << std::endl;
     }
 
