@@ -26,6 +26,7 @@ int main() {
                     state = 1;
                     waitTick = 0;
                 }
+                break;
             case 1:
                 a.forward();
                 state = 2;
