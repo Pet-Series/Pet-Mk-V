@@ -1,0 +1,41 @@
+#!/bin/sh -e
+# "Github @SeniorKullken 2023-02-01"
+# /etc/rc.local
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+#
+# ---------------------------------
+# This script will be executed at the end of the boot procedure
+# ----------------------------------
+# Edit:    $ sudo nano /etc/rc.local
+# View:    $ cat /etc/rc.local
+# Tst.run: $ sudo /etc/rc.local
+# ----------------------------------
+# "Debug  : ...see instructions below"
+# Debug: Sending output to a loggfile /tmp/rc.local.log
+# View debugg-loggfile:  $ cat /tmp/rc.local.log
+# Enable/Disable debug-mode by un-comment one of the following lines.
+# exec > /tmp/rc.local.log 2>&1;set -x
+# exec > /tmp/rc.local.log
+# ----------------------------------
+# "User added script..."
+# - Avoid lock the boot process by adding a trailing " &"
+
+# Print the IP address
+_IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+
+python3 /home/pi/ws_ros2/src/Pet-Mk-V/Linux/BootTimeShowNodeIP-LCD.py &
+
+exit 0
