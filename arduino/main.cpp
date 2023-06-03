@@ -1,6 +1,10 @@
 #include <iostream>
+#include <string>
 
 #include <unistd.h>
+
+#include <fcntl.h>
+#include <stdio.h>
 
 #include "YahboomCommunication/yahboom.hpp"
 //#include "SerialCommunication/serial.hpp"
@@ -9,58 +13,62 @@ int main() {
 
     YahboomC::YahboomConnection a = YahboomC::YahboomConnection("/dev/ttyACM0");
 
-    int state = 0;
-    int waitTick = 0;
-    const int waitTime = 20;
+    char state = '0';
+
+    int numRead;
+    char buf[20];
+    fcntl(0, F_SETFL, fcntl(0, F_GETFL) | O_NONBLOCK);
+
 
    for(int i = 0; i < 100000; i++){
-        usleep(1 * 1000000);
+        usleep(1 * 100000); // wait 100ms = 0.1s
+
+        numRead = read(0, buf, 1);
+        if (numRead > 0) {
+            state = buf[0];
+        }
+        else{
+            state = '0';
+        }
+
 
         switch (state) 
         {
-            case 0:
-                a.stop();
-                waitTick++;
-                if (waitTick > waitTime)
-                {
-                    state = 1;
-                    waitTick = 0;
-                }
-                break;
-            case 1:
+            case 'w':
                 a.forward();
-                state = 2;
                 break;
-            case 2:
+            case 's':
                 a.backwards();
-                state = 3;
                 break;
-            case 3:
+            case 'a':
+                a.turnLeft();
+                break;
+            case 'd':
+                a.turnRight();
+                break;
+            case 'q':
                 a.rotateLeft();
-                state = 4;
                 break;
-            case 4:
-                a.rotateLeft();
-                state = 5;
-                break;
-            case 5:
+            case 'e':
                 a.rotateRight();
-                state = 0;
+                break;
+            default:
+                a.stop();
                 break;
         }
 
 
         a.tick();
-        auto retval = a.getSensorData();
-        std::cout << "========== Data ==========" << std::endl;
-        std::cout << "Left wheel: " << retval.leftWheelTick << std::endl;
-        std::cout << "Right wheel: " << retval.rightWheelTick << std::endl;
-        std::cout << "Acceleration: " << retval.acceleration << std::endl;
-        std::cout << "Gyro: " << retval.gyro << std::endl;
-        std::cout << "Distance: " << retval.soundSensorDistance << std::endl;
-        std::cout << "Voltage: " << retval.voltage << std::endl;
-        std::cout << "Message Nr: " << retval.messageNr << std::endl;
-        std::cout << "========== " << i << " ==========" << std::endl;
+        //auto retval = a.getSensorData();
+        //std::cout << "========== Data ==========" << std::endl;
+        //std::cout << "Left wheel: " << retval.leftWheelTick << std::endl;
+        //std::cout << "Right wheel: " << retval.rightWheelTick << std::endl;
+        //std::cout << "Acceleration: " << retval.acceleration << std::endl;
+        //std::cout << "Gyro: " << retval.gyro << std::endl;
+        //std::cout << "Distance: " << retval.soundSensorDistance << std::endl;
+        //std::cout << "Voltage: " << retval.voltage << std::endl;
+        //std::cout << "Message Nr: " << retval.messageNr << std::endl;
+        //std::cout << "========== " << i << " ==========" << std::endl;
     }
 
     //https://blog.mbedded.ninja/programming/operating-systems/linux/linux-serial-ports-using-c-cpp/

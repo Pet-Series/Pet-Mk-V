@@ -10,7 +10,7 @@ target_compile_options(SerialC PRIVATE -Wall)
 set(CMAKE_CXX_STANDARD 20)
 
 # Set paths
-set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
+set(SOURCE_DIR ${PROJECT_SOURCE_DIR}/arduino)
 
 # Get all cpp files
 file(GLOB_RECURSE SOURCE_FILES ${SOURCE_DIR}/*.cpp)
