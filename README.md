@@ -47,7 +47,9 @@ The main objective/scope for this repository is to control the part of the softw
 
 # External references
 - http://wiki.ros.org/
-- http://wiki.ros.org/rosserial
+- https://github.com/Pet-Series/pet_ros2_lcd_pkg
+- https://github.com/Pet-Series/pet_ros2_lightbeacon_pkg
+- https://github.com/Pet-Series/pet_docker/tree/main/pet-mk-v-runtime
 
 For my own convenience - Some GitHub cheat sheets
 - https://guides.github.com/features/mastering-markdown/
